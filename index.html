@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Photo Slideshow via Twilio SMS</title>
+        <style>
+        #slides {
+            height: 100%;
+            width: 100%;
+            margin:0;
+            background-color: #4D4E53;
+        }
+
+        img {
+            height: 100%;
+            width: auto;
+            display:none;
+        }
+
+        </style>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </head>
+    <body>
+        <h1>Please text a picture of your cute dog to +1 646 679 2690!</h1>      
+        <div id="slides">
+            <img src="https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xpf1/t31.0-8/413044_10150573810708875_586542332_o.jpg">
+            <img src="https://dl.dropboxusercontent.com/u/2408891/2009-12-31%2023.00.00-23%20%20%20Flickr%20-%20Photo%20Sharing%21_files/16568202548_d299b218c8_c.jpg">
+        </div>
+        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script>
+          var socket = io();
+          socket.on('picture', function (data) {
+            var img = $('<img>');
+            img.attr('src', data);
+                img.appendTo('#slides');
+
+                console.log(data);
+          });
+
+          $(function() {
+
+            var images = $('#slides img').length;
+            var currentImage = 0;
+
+          function changeSlide () {
+            images = $('#slides img').length;
+            currentImage++;
+            if (currentImage > images) {
+                currentImage = 1;
+            }
+            $( "#slides img:nth-child(" + currentImage+ ")" ).fadeIn("fast").delay(6000).fadeOut('fast');
+          }
+
+
+          setInterval(changeSlide, 6000);
+        });
+
+        </script>
+    </body>
+</html>
